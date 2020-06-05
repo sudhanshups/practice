@@ -29,13 +29,12 @@ public class InterviewbitQueue {
        /* ArrayList<String> A = new ArrayList<>(Arrays.asList("2", "1", "+", "3", "*"));
         System.out.println(ibit.evaluateReversePolish(A));*/
 
-        //ArrayList<Integer> A = new ArrayList<>(Arrays.asList(34, 35, 27, 42, 5, 28, 39, 20, 28));
-        //System.out.println(ibit.nextGreater(A));
+        ArrayList<Integer> A = new ArrayList<>(Arrays.asList(34, 35, 27, 42, 5, 28, 39, 20, 28));
+        System.out.println(ibit.nextGreater(A));
         //35 42 42 -1 28 39 -1 28 -1
 
-        int[][] arr = new int[][]{{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
-
-        System.out.println(ibit.reconstructQueue(arr));
+/*        int[][] arr = new int[][]{{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
+        System.out.println(ibit.reconstructQueue(arr));*/
     }
 
     //input [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]

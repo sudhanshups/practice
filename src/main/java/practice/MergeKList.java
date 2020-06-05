@@ -46,6 +46,9 @@ public class MergeKList {
 		l.add(l5);
 
 		Queue<Pair> pqueue = new PriorityQueue<Pair>();
+		//another way to initialize with comparator
+		//Queue<Pair> pqueue = new PriorityQueue<Pair>((u,v)->u.list.get(u.index)-v.list.get(v.index));
+
 		Pair p1 = new Pair(l.get(0),0);
 		Pair p2 = new Pair(l.get(1),0);
 		Pair p3 = new Pair(l.get(2),0);

@@ -3,6 +3,7 @@ package practice.basic;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -144,7 +145,7 @@ public class Java8Tester {
 
     void lambdaExpressions(Java8Tester tester) {
         // with type declaration
-        MathOperation addition = (int a, int b) -> a + b;
+        MathOperation addition = (a, b) -> a + b;
 
         // with out type declaration
         MathOperation subtraction = (a, b) -> a - b;
@@ -162,6 +163,9 @@ public class Java8Tester {
         System.out.println("10 x 5 = " + tester.operate(10, 5, multiplication));
         System.out.println("10 / 5 = " + tester.operate(10, 5, division));
 
+        BiFunction<Integer,Integer,Integer> add = (a,b)->a+b;
+        System.out.println(add.apply(10,2));
+
         // without parenthesis
         GreetingService greetService1 = message -> System.out.println("Hello " + message);
 
@@ -171,6 +175,11 @@ public class Java8Tester {
         greetService1.sayMessage("Mahesh");
         greetService2.sayMessage("Suresh");
     }
+
+//    MathOperation<Integer> addition = (a, b) -> a + b;
+//    interface MathOperation<T> {
+//        T operation(T a, T b);
+//    }
 
     interface MathOperation {
         int operation(int a, int b);

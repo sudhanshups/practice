@@ -82,7 +82,7 @@ public class InterviewbitHashing {
         ibit.printList(copy);
         System.out.println();*/
 
-        //System.out.println(ibit.lengthOfLongestSubstring("ababc"));
+        //System.out.println(ibit.lengthOfLongestSubstringWithoutRepetition("ababc"));
 
     /*    System.out.println(ibit.minWindow("xiEjBOGeHIMIlslpQIZ6jERaAVoHUc9Hrjlv7pQpUSY8oHqXoQYWWll8Pumov89wXDe0Qx6bEjsNJQAQ0A6K21Z0BrmM96FWEdRG69M9CYtdBOrDjzVGPf83UdP3kc4gK0uHVKcPN4HPdccm9Qd2VfmmOwYCYeva6BSG6NGqTt1aQw9BbkNsgAjvYzkVJPOYCnz7U4hBeGpcJkrnlTgNIGnluj6L6zPqKo5Ui75tC0jMojhEAlyFqDs7WMCG3dmSyVoan5tXI5uq1IxhAYZvRQVHtuHae0xxwCbRh6S7fCLKfXeSFITfKHnLdT65K36vGC7qOEyyT0Sm3Gwl2iXYSN2ELIoITfGW888GXaUNebAr3fnkuR6VwjcsPTldQSiohMkkps0MH1cBedtaKNoFm5HbH15kKok6aYEVsb6wOH2w096OwEyvtDBTQwoLN87JriLwgCBBavbOAiLwkGGySk8nO8dLHuUhk9q7f0rIjXCsQeAZ1dfFHvVLupPYekXzxtWHd84dARvv4Z5L1Z6j8ur2IXWWbum8lCi7aErEcq41WTo8dRlRykyLRSQxVH70rUTz81oJS3OuZwpI1ifBAmNXoTfznG2MXkLtFu4SMYC0bPHNctW7g5kZRwjSBKnGihTY6BQYItRwLUINApd1qZ8W4yVG9tnjx4WyKcDhK7Ieih7yNl68Qb4nXoQl079Vza3SZoKeWphKef1PedfQ6Hw2rv3DpfmtSkulxpSkd9ee8uTyTvyFlh9G1Xh8tNF8viKgsiuCZgLKva32fNfkvW7TJC654Wmz7tPMIske3RXgBdpPJd5BPpMpPGymdfIw53hnYBNg8NdWAImY3otYHjbl1rqiNQSHVPMbDDvDpwy01sKpEkcZ7R4SLCazPClvrx5oDyYolubdYKcvqtlcyks3UWm2z7kh4SHeiCPKerh83bX0m5xevbTqM2cXC9WxJLrS8q7XF1nh",
                 "dO4BRDaT1wd0YBhH88Afu7CI4fwAyXM8pGoGNsO1n8MFMRB7qugS9EPhCauVzj7h"));*/
@@ -96,9 +96,8 @@ public class InterviewbitHashing {
 /*        ArrayList<String> words = new ArrayList<>(Arrays.asList("foo", "bar"));
         System.out.println(ibit.findSubstringIndices("barfoothefoobarman", words));*/
 
-        System.out.println(ibit.getSubstringWithEqual012("012012"));
-        System.out.println(ibit.countSubarrWithEqualZeroAndOne(new int[]{0, 1, 0, 1}, 4));
-
+//        System.out.println(ibit.getSubstringWithEqual012("012012"));
+//        System.out.println(ibit.countSubarrWithEqualZeroAndOne(new int[]{0, 1, 0, 1}, 4));
 
     }
 
@@ -379,8 +378,8 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
 
     public String minWindow(String A, String B) {
 
-        int patMap[] = new int[256];
-        int stringMap[] = new int[256];
+        int[] patMap = new int[256];
+        int[] stringMap = new int[256];
 
         for (char c : B.toCharArray()) {
             patMap[c]++;
@@ -422,24 +421,22 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
         return A.substring(startIndex, startIndex + minLength);
     }
 
-
-    public int lengthOfLongestSubstring(String A) {
-        /*Another approach without queue
-        HashSet<Character> hashSet = new HashSet<Character>();
+    static public int lengthOfLongestSubstringWithoutRepetition1(String A) {
+        Set<Character> charSet = new HashSet<>();
         int maxCount = 0;
         int start = 0;
-        for(char c : A.toCharArray()){
-            while(hashSet.contains(c)){
-                hashSet.remove(A.charAt(start));
-                start++;
+        for (char c : A.toCharArray()) {
+            while (charSet.contains(c)) {
+                charSet.remove(A.charAt(start++));
             }
-            hashSet.add(c);
-            maxCount = Math.max(maxCount, hashSet.size());
+            charSet.add(c);
+            maxCount = Math.max(maxCount, charSet.size());
         }
-
         return maxCount;
-         */
+    }
 
+
+    public int lengthOfLongestSubstringWithoutRepetition(String A) {
         Queue<Integer> queue = new LinkedList<>();
         Map<Character, Integer> charToIndex = new HashMap<>();
         int l = 0;

@@ -11,7 +11,7 @@ class StringTesting {
     public static void main(String args[])
     {
     	
-    	System.out.println(EasySingleton.INSTANCE.ordinal());
+    	System.out.println(EasySingleton.INSTANCE.toString());
     	System.out.println(EasySingleton.BA.ordinal());
 	   	
     	
@@ -20,6 +20,7 @@ class StringTesting {
         String str2 = str.substring(0,2);
         String str3 = str.substring(0,2);
         String str4 = str.substring(0,str.length());
+
         String str5 = str1.substring(0,2);
         String str6 = str1.substring(0,2);
         String str7 = str1.substring(0,str1.length());

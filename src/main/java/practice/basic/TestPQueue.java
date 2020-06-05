@@ -16,12 +16,14 @@ public class TestPQueue
 
         pQueue.add("Java");
         pQueue.add("Python");
- 
+        pQueue.add("Java1");
+
+
         // Printing the most priority element
         System.out.println("Head value using peek function:"
                 + pQueue.peek());
  
-        // Printing all elements
+        // Printing all elements, they will not be sorted
         System.out.println("The queue elements:");
         Iterator itr = pQueue.iterator();
         while (itr.hasNext())

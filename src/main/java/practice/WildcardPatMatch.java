@@ -93,7 +93,7 @@ public class WildcardPatMatch {
         System.out.println(strmatch(text, pat, text.length(), pat.length()));
 
         WildcardPatMatch obj = new WildcardPatMatch();
-        System.out.println(obj.patternMatch(text, 0, pat, 0));
+        //System.out.println(obj.patternMatch(text, 0, pat, 0));
 
         //System.out.println(obj.patternMatchDP(text, pat));
 

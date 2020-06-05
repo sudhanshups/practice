@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.function.Function;
 
 public class InterviewbitTwoPointer {
 
@@ -29,13 +30,12 @@ public class InterviewbitTwoPointer {
 
        /* ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 3, 5));
         System.out.println(ibit.diffPossible(A, 3));*/
-/*
-        ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 1, 3, 3, 5, 4));
-        System.out.println(ibit.removeDuplicates(A));
-        System.out.println(A)*/
-        ;
 
-        /*// ArrayList<Integer> A = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3));
+        /*ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 1, 2));
+        System.out.println(ibit.removeDuplicates(A));
+        System.out.println(A);*/
+
+        /*ArrayList<Integer> A = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3));
         ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 1, 1, 2));
         System.out.println(ibit.removeDuplicatesKeep2(A));
         System.out.println(A);*/
@@ -58,44 +58,336 @@ public class InterviewbitTwoPointer {
        /* ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 1, 0, 1, 1, 0, 0, 1, 1, 1));
         System.out.println(ibit.maxone(A, 2));*/
 
-        ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 4, 10));
+        /*ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 4, 10));
         ArrayList<Integer> B = new ArrayList<>(Arrays.asList(2, 15, 20));
         ArrayList<Integer> C = new ArrayList<>(Arrays.asList(10, 12));
         System.out.println(ibit.minimize(A, B, C));
 
-        System.out.println(ibit.countInversions(new ArrayList<>(Arrays.asList(2, 1, 1))));
+        System.out.println(ibit.countInversions(new ArrayList<>(Arrays.asList(2, 1, 1))));*/
+
+       /* int arr[] = new int[]{1, 3, 2};
+        ibit.nextPermutation(arr);
+        Arrays.stream(arr).forEach(System.out::println);*/
+
+//        System.out.println(ibit.multiply("210", "0"));
+
+//        System.out.println(ibit.addBinaryNumber("1111","1111"));
+
+        /*int[] arr = new int[1];
+        int[] arr2 = new int[]{1};
+        ibit.merge(arr, 0, arr2, 1);
+        Arrays.stream(arr).forEach(System.out::println);
+
+        arr = new int[]{1};
+        ibit.merge(arr, 1, new int[0], 0);
+        Arrays.stream(arr).forEach(System.out::println);
+        */
+
+//        System.out.println(ibit.lengthOfLongestSubstringKDistinct("s", 0));
+
+        System.out.println(ibit.subarraySum(new int[]{1,1,1,1}, 2));
+
     }
 
-    static int searchinPivotedArray(int arr[], int l, int h, int key)
-    {
+    public int subarraySum(int[] nums, int k) {
+        int count = 0, sum = 0;
+        HashMap < Integer, Integer > map = new HashMap < > ();
+        map.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (map.containsKey(sum - k))
+                count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        return count;
+    }
+
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        Map<Character, Integer> map = new HashMap<>();
+
+        int len = 0;
+        int maxLen = 0;
+        int start = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            map.put(c, map.getOrDefault(c,0) + 1);
+            len++;
+
+            while (map.size() > k) {
+                char sChar = s.charAt(start);
+                map.put(sChar, map.get(sChar) - 1);
+                if (map.get(sChar) == 0) {
+                    map.remove(sChar);
+                }
+                len--;
+                start++;
+            }
+            maxLen = Math.max(maxLen, len);
+        }
+        return maxLen;
+    }
+
+    private String one(int num) {
+        switch (num) {
+            case 1:
+                return "One";
+            case 2:
+                return "Two";
+            case 3:
+                return "Three";
+            case 4:
+                return "Four";
+            case 5:
+                return "Five";
+            case 6:
+                return "Six";
+            case 7:
+                return "Seven";
+            case 8:
+                return "Eight";
+            case 9:
+                return "Nine";
+        }
+        return "";
+    }
+
+    private String twoLessThan20(int num) {
+        switch (num) {
+            case 10:
+                return "Ten";
+            case 11:
+                return "Eleven";
+            case 12:
+                return "Twelve";
+            case 13:
+                return "Thirteen";
+            case 14:
+                return "Fourteen";
+            case 15:
+                return "Fifteen";
+            case 16:
+                return "Sixteen";
+            case 17:
+                return "Seventeen";
+            case 18:
+                return "Eighteen";
+            case 19:
+                return "Nineteen";
+        }
+        return "";
+    }
+
+    private String ten(int num) {
+        switch (num) {
+            case 2:
+                return "Twenty";
+            case 3:
+                return "Thirty";
+            case 4:
+                return "Forty";
+            case 5:
+                return "Fifty";
+            case 6:
+                return "Sixty";
+            case 7:
+                return "Seventy";
+            case 8:
+                return "Eighty";
+            case 9:
+                return "Ninety";
+        }
+        return "";
+    }
+
+    private String two(int num) {
+        if (num == 0)
+            return "";
+        else if (num < 10)
+            return one(num);
+        else if (num < 20)
+            return twoLessThan20(num);
+        else {
+            int tenner = num / 10;
+            int rest = num - tenner * 10;
+            if (rest != 0)
+                return ten(tenner) + " " + one(rest);
+            else
+                return ten(tenner);
+        }
+    }
+
+    private String three(int num) {
+        int hundred = num / 100;
+        int rest = num - hundred * 100;
+        String res = "";
+        if (hundred * rest != 0)
+            res = one(hundred) + " Hundred " + two(rest);
+        else if ((hundred == 0) && (rest != 0))
+            res = two(rest);
+        else if ((hundred != 0) && (rest == 0))
+            res = one(hundred) + " Hundred";
+        return res;
+    }
+
+    //Input: 1234567
+    //Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+    public String numberToWords(int num) { //important
+        if (num == 0)
+            return "Zero";
+
+        int billion = num / 1000000000;
+        int million = (num - billion * 1000000000) / 1000000;
+        int thousand = (num - billion * 1000000000 - million * 1000000) / 1000;
+        int rest = num - billion * 1000000000 - million * 1000000 - thousand * 1000;
+
+        String result = "";
+        if (billion != 0)
+            result = three(billion) + " Billion";
+        if (million != 0) {
+            if (!result.isEmpty())
+                result += " ";
+            result += three(million) + " Million";
+        }
+        if (thousand != 0) {
+            if (!result.isEmpty())
+                result += " ";
+            result += three(thousand) + " Thousand";
+        }
+        if (rest != 0) {
+            if (!result.isEmpty())
+                result += " ";
+            result += three(rest);
+        }
+        return result;
+    }
+
+    /**
+     * input  1 2 3
+     * output 6 3 2
+     */
+    public void productArray(int arr[], int n) {
+        if (n == 1) {
+            System.out.print("0");
+            return;
+        }
+
+        int i, temp = 1;
+        int prod[] = new int[n];
+        for (int j = 0; j < n; j++)
+            prod[j] = 1;
+
+        for (i = 0; i < n; i++) {
+            prod[i] = temp;
+            temp *= arr[i];
+        }
+
+        temp = 1;
+        for (i = n - 1; i >= 0; i--) {
+            prod[i] *= temp;
+            temp *= arr[i];
+        }
+
+        for (i = 0; i < n; i++)
+            System.out.print(prod[i] + " ");
+
+    }
+
+    public boolean isOneEditDistance(String s1, String s2) {
+        int m = s1.length(), n = s2.length();
+
+        if (Math.abs(m - n) > 1)
+            return false;
+
+        int count = 0; // Count of edits
+
+        int i = 0, j = 0;
+        while (i < m && j < n) {
+            // If current characters don't match
+            if (s1.charAt(i) != s2.charAt(j)) {
+                if (count == 1)
+                    return false;
+
+                // If length of one string is
+                // more, then only possible edit
+                // is to remove a character
+                if (m > n)
+                    i++;
+                else if (m < n)
+                    j++;
+                else // Iflengths of both strings is same
+                {
+                    i++;
+                    j++;
+                }
+
+                // Increment count of edits
+                count++;
+            } else // If current characters match
+            {
+                i++;
+                j++;
+            }
+        }
+
+        // If last character is extra in any string
+        if (i < m || j < n)
+            count++;
+        return count == 1;
+    }
+
+    //https://leetcode.com/problems/merge-sorted-array/
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+
+        for (int i = m - 1, l = m + n - 1; i >= 0; i--, l--) {
+            nums1[l] = nums1[i];
+        }
+
+        int i = 0, j = n, k = 0;
+        for (; j < m + n && k < n; i++) {
+            if (nums1[j] < nums2[k]) {
+                nums1[i] = nums1[j];
+                j++;
+            } else {
+                nums1[i] = nums2[k];
+                k++;
+            }
+        }
+        while (j < m + n) {
+            nums1[i++] = nums1[j++];
+        }
+        while (k < n) {
+            nums1[i++] = nums2[k++];
+        }
+    }
+
+    static int searchinPivotedArray(int arr[], int l, int h, int key) {
         if (l > h)
             return -1;
 
-        int mid = (l+h)/2;
+        int mid = (l + h) / 2;
         if (arr[mid] == key)
             return mid;
 
         /* If arr[l...mid] first subarray is sorted */
-        if (arr[l] <= arr[mid])
-        {
+        if (arr[l] <= arr[mid]) {
             /* As this subarray is sorted, we
                can quickly check if key lies in
                half or other half */
             if (key >= arr[l] && key <= arr[mid])
-                return searchinPivotedArray(arr, l, mid-1, key);
+                return searchinPivotedArray(arr, l, mid - 1, key);
             /*If key not lies in first half subarray,
            Divide other half  into two subarrays,
            such that we can quickly check if key lies
            in other half */
-            return searchinPivotedArray(arr, mid+1, h, key);
+            return searchinPivotedArray(arr, mid + 1, h, key);
         }
 
         /* If arr[l..mid] first subarray is not sorted,
            then arr[mid... h] must be sorted subarry*/
         if (key >= arr[mid] && key <= arr[h])
-            return searchinPivotedArray(arr, mid+1, h, key);
+            return searchinPivotedArray(arr, mid + 1, h, key);
 
-        return searchinPivotedArray(arr, l, mid-1, key);
+        return searchinPivotedArray(arr, l, mid - 1, key);
     }
 
     static int findPivot(int arr[], int low, int high) {
@@ -325,16 +617,142 @@ public class InterviewbitTwoPointer {
         return l;
     }
 
-
-    public int removeDuplicates(ArrayList<Integer> a) {
-        int i = 0;
-        for (int j = 1; j < a.size(); j++) {
-            if (!a.get(i).equals(a.get(j))) {
-                i++;
-                a.set(i, a.get(j));
+    public void nextPermutation(int[] nums) {
+        boolean found = false;
+        int sortIndex = 0;
+        int pivot = 0;
+        for (int i = nums.length - 1; i > 0; i--) {
+            if (nums[i - 1] < nums[i]) {
+                found = true;
+                sortIndex = i;
+                pivot = i - 1;
+                break;
             }
         }
-        return i + 1;
+        if (!found) {
+            Arrays.sort(nums);
+        } else {
+            int maxIndex = sortIndex;
+            for (int i = sortIndex; i < nums.length; i++) {
+                if (nums[pivot] < nums[i] && nums[i] < nums[maxIndex]) {
+                    maxIndex = i;
+                }
+            }
+            int tmp = nums[maxIndex];
+            nums[maxIndex] = nums[pivot];
+            nums[pivot] = tmp;
+            Arrays.sort(nums, sortIndex, nums.length);
+        }
+    }
+
+    interface TriFuction<U, V, W, X> {
+        X apply(U u, V v, W w);
+    }
+
+    //https://leetcode.com/problems/add-binary/
+    public String addBinaryNumber(String a, String b) {
+        Function<Integer, String> fn = (u) -> {
+            switch (u) {
+                case 0:
+                    return "00";
+                case 1:
+                    return "01";
+                case 2:
+                    return "10";
+                case 3:
+                    return "11";
+            }
+            return "00";
+        };
+        a = new StringBuilder(a).reverse().toString();
+        b = new StringBuilder(b).reverse().toString();
+        StringBuilder s = new StringBuilder();
+        char carry = '0';
+        int i = 0;
+        for (; i < Math.min(a.length(), b.length()); i++) {
+            int result = a.charAt(i) + b.charAt(i) + carry - 3 * '0';
+            s.append(fn.apply(result).charAt(1));
+            carry = fn.apply(result).charAt(0);
+        }
+        while (i < a.length()) {
+            int result = a.charAt(i) + carry - 2 * '0';
+            s.append(fn.apply(result).charAt(1));
+            carry = fn.apply(result).charAt(0);
+            i++;
+        }
+        while (i < b.length()) {
+            int result = b.charAt(i) + carry - 2 * '0';
+            s.append(fn.apply(result).charAt(1));
+            carry = fn.apply(result).charAt(0);
+            i++;
+        }
+        if (carry == '1') {
+            s.append(carry);
+        }
+
+        return s.reverse().toString();
+
+    }
+
+    private void sumArray(char[] result, char[] tempResult, int zeros) {
+        int i = 0;
+        int c = 0;
+        for (; i < tempResult.length; i++) {
+            c = (result[i + zeros] - '0') + (tempResult[i] - '0') + c;
+            result[i + zeros] = (char) (c % 10 + '0');
+            c = c / 10;
+        }
+        while (c != 0) {
+            c = (result[i + zeros] - '0') + c;
+            result[i + zeros] = (char) (c % 10 + '0');
+            c = c / 10;
+            i++;
+        }
+    }
+
+    public String multiply(String num1, String num2) {
+        char[] result = new char[num1.length() + num2.length()];
+        Arrays.fill(result, '0');
+        //num2 * num1
+        int zeros = 0;
+        for (int c1 = num1.length() - 1; c1 >= 0; c1--) {
+            char[] num2Arr = num2.toCharArray();
+            char[] tempResult = new char[num2.length() + 1];
+            Arrays.fill(tempResult, '0');
+
+            int carry = 0;
+            int mul = num1.charAt(c1) - '0';
+            int j = 0;
+            for (int i = num2Arr.length - 1; i >= 0; i--) {
+                carry = (num2Arr[i] - '0') * mul + carry;
+                tempResult[j] = (char) (carry % 10 + '0');
+                carry = carry / 10;
+                j++;
+            }
+            tempResult[j] = (char) (carry + '0');
+            sumArray(result, tempResult, zeros);
+            zeros++;
+        }
+
+        int i = result.length - 1;
+        for (; i > 0; i--) {
+            if (result[i] != '0') {
+                break;
+            }
+        }
+        StringBuilder s = new StringBuilder(new String(result, 0, i + 1));
+        return s.reverse().toString();
+    }
+
+    public int removeDuplicates(ArrayList<Integer> a) {
+        int unique = 0;
+        for (int i = 1; i < a.size(); i++) {
+            if (!a.get(i).equals(a.get(unique))) {
+                unique++;
+                a.set(unique, a.get(i));
+            }
+        }
+        return unique + 1;
     }
 
     public int diffPossible(ArrayList<Integer> array, int lf) {
@@ -381,32 +799,25 @@ public class InterviewbitTwoPointer {
         return (int) res;
     }
 
-
     public ArrayList<ArrayList<Integer>> threeSumZero(ArrayList<Integer> A) {
-        A.sort((u, v) -> (u - v));
-        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        A.sort((u, v) -> u - v);
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
         for (int i = 0; i < A.size() - 2; ) {
-            int l = i + 1;
             int r = A.size() - 1;
+            int l = i + 1;
             int a = A.get(i);
             while (l < r) {
-
                 int b = A.get(l);
                 int c = A.get(r);
                 int sum = a + b + c;
                 if (sum == 0) {
-                    ArrayList<Integer> x = new ArrayList<>();
-                    x.add(a);
-                    x.add(b);
-                    x.add(c);
-                    res.add(x);
+                    result.add(new ArrayList<>(Arrays.asList(a, b, c)));
                     while (l < A.size() && A.get(l) == b) {
                         l++;
                     }
-                    while (r > l && A.get(r) == c) {
+                    while (r >= 0 && A.get(r) == c) {
                         r--;
                     }
-
                 } else if (sum < 0) {
                     l++;
                 } else {
@@ -417,8 +828,7 @@ public class InterviewbitTwoPointer {
                 i++;
             }
         }
-
-        return res;
+        return result;
     }
 
 

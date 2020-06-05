@@ -144,10 +144,12 @@ public class MustPrograms {
         System.out.print(DistinctInK(arr, 3));*/
         //System.out.println(validIps("0100100"));
 
-        ArrayList<Integer> a = new ArrayList<>();
+/*        ArrayList<Integer> a = new ArrayList<>();
         a.add(2);
         a.add(7);
-        System.out.println(hammingDistance(a));
+        System.out.println(hammingDistance(a));*/
+
+        System.out.println(romanToInt("LVIII"));
     }
 
 
@@ -696,36 +698,36 @@ public class MustPrograms {
 
     }
 
-    public static int romanToInt(String number) {
-        Map<Character, Integer> romanToNumber = new HashMap<>();
-        romanToNumber.put('I', 1);
-        romanToNumber.put('V', 5);
-        romanToNumber.put('X', 10);
-        romanToNumber.put('L', 50);
-        romanToNumber.put('C', 100);
-        romanToNumber.put('D', 500);
-        romanToNumber.put('M', 1000);
-        char last = '*';
+    static int romanToInt(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int arr[] = new int[]{1, 5, 10, 50, 100, 500, 1000};
+        char arrchar[] = new char[]{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+        for (int i = 0; i < arr.length; i++) {
+            map.put(arrchar[i], arr[i]);
+        }
+
         int result = 0;
-        for (Character c : number.toCharArray()) {
-            if (last == '*')
-                last = c;
-            else {
-                if (romanToNumber.get(c) <= romanToNumber.get(last)) {
-                    result += romanToNumber.get(last);
-                    last = c;
-                } else {
-                    result += -romanToNumber.get(last) + romanToNumber.get(c);
+        char last = '*';
+        for (int i = 0; i < s.length(); i++) {
+            int num = map.get(s.charAt(i));
+            if (last == '*') {
+                last = s.charAt(i);
+            } else {
+                int previous = map.get(last);
+                if (previous < num) {
+                    result += num - previous;
                     last = '*';
+                } else {
+                    result += previous;
+                    last = s.charAt(i);
                 }
             }
         }
-        if (last != '*')
-            result += romanToNumber.get(last);
-
+        if (last != '*') {
+            result += map.get(last);
+        }
         return result;
     }
-
 
     public static String dedupe(String inputStr, int chunkSize) {
         //"aaaaaaaaaabbbbbbbbbbaaaaaaaaaabbbbbbbbbbaaaaaaaaaabbbbbbbbbbaaaaaaaaaabbbbbbbbbbaaaaaaaaaabbbbbbbbbbaaaaaaaaaabbbbbbbbbbcccccccccc",
@@ -1532,13 +1534,13 @@ public class MustPrograms {
     //insert one interval in sorted intervals
     public ArrayList<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
         ArrayList<Interval> result = new ArrayList<Interval>();
-        for(Interval interval: intervals){
-            if(interval.end < newInterval.start){
+        for (Interval interval : intervals) {
+            if (interval.end < newInterval.start) {
                 result.add(interval);
-            }else if(interval.start > newInterval.end){
+            } else if (interval.start > newInterval.end) {
                 result.add(newInterval);
                 newInterval = interval;
-            }else if(interval.end >= newInterval.start || interval.start <= newInterval.end){
+            } else if (interval.end >= newInterval.start || interval.start <= newInterval.end) {
                 newInterval = new Interval(Math.min(interval.start, newInterval.start), Math.max(newInterval.end, interval.end));
             }
         }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Input {
     public static void main(String[] args) throws IOException {
@@ -16,6 +17,10 @@ public class Input {
         int a = Integer.parseInt(arg[0]);
 
         int[] costs = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+
+        Integer[] fwe = Arrays.stream(in.readLine().split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+
+        List<Integer> fk = Arrays.stream(in.readLine().split(" ")).map(u-> Integer.parseInt(u)).collect(Collectors.toList());
 
         // int to string array
         Arrays.stream(costs).mapToObj(String::valueOf).toArray(String[]::new);

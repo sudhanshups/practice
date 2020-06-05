@@ -7,6 +7,7 @@ import java.util.*;
 @Log4j
 public class uniqueSubstringSizeK {
 
+    //substring of size k with all unique charecter
     public static Set<String> uniqueSubstringSizeK(String s, int k) {
         Set<String> set = new HashSet<>();
         int[] ch = new int[26];
@@ -33,12 +34,44 @@ public class uniqueSubstringSizeK {
         return set;
     }
 
+    static int BASE = 26;
+    static int mod = 3001;
+    //Count number of distinct substrings of a given length
+    static void CntSubstr(char[] s, int l) {
+        int hash = 0;
+        for (int i = 0; i < l; i++) {
+            hash = (hash * BASE + (s[i] - 97)) % mod;
+        }
+
+        // Computing BASE^(l-1)
+        int pow_l = 1;
+        for (int i = 0; i < l - 1; i++) {
+            pow_l = (pow_l * BASE) % mod;
+        }
+
+        // Unordered set to add hash values
+        HashSet<Integer> result = new HashSet<Integer>();
+        result.add(hash);
+
+        // Generating all possible hash values
+        for (int i = l; i < s.length; i++) {
+            hash = ((hash % pow_l) * BASE + (s[i] - 97)) % mod;
+            result.add(hash);
+        }
+
+        // Print the result
+        System.out.println(result.size());
+    }
+
     public static void main(String[] args) {
-        uniqueSubstringSizeK("abcabc", 3);
+        //uniqueSubstringSizeK("abcabc", 3);
         uniqueSubstringSizeK("abacab", 3);
-        uniqueSubstringSizeK("awaglknagawunagwkwagl", 4);
-        List<Integer> l = new ArrayList<>(Arrays.asList(4,2,1,3,6,5,7));
-        System.out.println(distance(new ArrayList<>(Arrays.asList(4,2,1,3,6,5,7)),1,5));
+        //uniqueSubstringSizeK("awaglknagawunagwkwagl", 4);
+
+        CntSubstr("abcba".toCharArray(), 2);
+
+        List<Integer> l = new ArrayList<>(Arrays.asList(4, 2, 1, 3, 6, 5, 7));
+        System.out.println(distance(new ArrayList<>(Arrays.asList(4, 2, 1, 3, 6, 5, 7)), 1, 5));
 
     }
 

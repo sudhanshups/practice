@@ -5,10 +5,11 @@ import org.apache.commons.collections.map.LRUMap;
 
 import java.util.ArrayList;
 
+//Using Apache LRU map
 class InMemoryCache<K, T> {
  
     private long timeToLive;
-    @SuppressWarnings("rawtypes")
+    //@SuppressWarnings("rawtypes")
 	private LRUMap CacheMap;
 
     protected class CacheObject {

@@ -4,7 +4,7 @@ import java.util.*;
 public class TestArrayList {
 	public static void main(String args[]) {
 
-		// public class ArrayList<E> extends AbstractList<E> implements List<E>,
+//		 public class ArrayList<E> extends AbstractList<E> implements List<E> de;
 		// RandomAccess, Cloneable, Serializable
 
 		List<String> lt = new ArrayList<>();

@@ -12,6 +12,7 @@ class Arithmetic {
 public class MethodReference3 {
     public static void main(String[] args) {
         BiFunction<Integer, Integer, Integer> adder = Arithmetic::add;
+        BiFunction<Integer, Integer, Integer> adder1 = (a, b) -> a + b;
 
         int result = adder.apply(10, 20);
         System.out.println(result);
