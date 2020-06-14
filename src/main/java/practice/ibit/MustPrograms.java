@@ -75,6 +75,7 @@ public class MustPrograms {
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        MustPrograms m = new MustPrograms();
        /* String input = in.readLine();
         String pattern = in.readLine();*/
 
@@ -149,9 +150,66 @@ public class MustPrograms {
         a.add(7);
         System.out.println(hammingDistance(a));*/
 
-        System.out.println(romanToInt("LVIII"));
+//        System.out.println(romanToInt("LVIII"));
+
+        //String
+//      System.out.println(m.rotationalCipher("Zebra-493?", 3));
+//        System.out.println(m.matchingPairs("abcde", "adcbe"));
+
     }
 
+    //Matching Pairs
+    public int matchingPairs(String s, String t) {
+        boolean one = false;
+        boolean two = false;
+        Map<Character, Character> map = new HashMap<>();
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == t.charAt(i)) {
+                res++;
+            }
+
+            if (!two && map.containsKey(t.charAt(i)) && s.charAt(i) == map.get(t.charAt(i))) {
+                two = true;
+                res += 2;
+                if (one) {
+                    res -= 1;
+                    one = false;
+                }
+            } else if (!one && !two && map.containsKey(t.charAt(i))) {
+                res += 1;
+            }
+            map.put(s.charAt(i), t.charAt(i));
+        }
+        if (!two && !one) {
+            res -= 2;
+        }
+        return res;
+    }
+
+
+    public String rotationalCipher(String input, int rotationFactor) {
+        StringBuilder s = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                s.append(rotate(c, rotationFactor, 'a'));
+            } else if (c >= 'A' && c <= 'Z') {
+                s.append(rotate(c, rotationFactor, 'A'));
+            } else if (c >= '0' && c <= '9') {
+                s.append(rotate(c, rotationFactor, '0'));
+            } else {
+                s.append(c);
+            }
+        }
+        return s.toString();
+    }
+
+    private char rotate(char c, int r, int base) {
+        if (base == '0') {
+            return (char) (base + (c - base + r) % 10);
+        } else
+            return (char) (base + (c - base + r) % 26);
+    }
 
     static ArrayList<String> validIps(String text) {
         Set<String> res = new TreeSet<>();

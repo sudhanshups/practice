@@ -15,7 +15,7 @@ public class Interviewbitbacktracking {
        /* ArrayList<Integer> A = new ArrayList<>(Arrays.asList(1, 2, 3));
         System.out.println(ibit.subsets(A));*/
 
-        //  System.out.println(ibit.combine(4, 2));
+        System.out.println(ibit.combine(4, 2));
 
 /*      ArrayList<Integer> A = new ArrayList<>(Arrays.asList(8, 10, 6, 11, 1, 16, 8));
         System.out.println(ibit.combinationSum(A, 28));*/
@@ -57,45 +57,44 @@ public class Interviewbitbacktracking {
 
         ibit.solveSudoku(a);
         System.out.println(a);*/
-        System.out.println(ibit.transferBananas(3000, 1000, 1000, 1));
-
+//        System.out.println(ibit.transferBananas(3000, 1000, 1000, 1));
 
 
     }
 
     //elephant and banana
     double transferBananas(double totalBanana, double remainingDistance, double maxToCarry, double eatBananaPerKm) {
-    // base case: remaining bananas <= maxToCarry,
-    // so carry all the bananas in one trip
-    // at this point if distance is more than totalBanana/eatBananaPerKm,
-    // elephant can never reach destination, return 0
+        // base case: remaining bananas <= maxToCarry,
+        // so carry all the bananas in one trip
+        // at this point if distance is more than totalBanana/eatBananaPerKm,
+        // elephant can never reach destination, return 0
         if (totalBanana <= maxToCarry) {
             double bananasAtDestination = totalBanana - remainingDistance * eatBananaPerKm;
             return Math.max(bananasAtDestination, 0.0);    // out of bananas!
         }
 
-    // # trips you would travel back and forth
+        // # trips you would travel back and forth
         int numTrips = 2 * (int) (Math.ceil(totalBanana / maxToCarry) - 1) + 1;
 
-    // how many bananas you consume per km
+        // how many bananas you consume per km
         double costPerKm = numTrips * eatBananaPerKm;
 
-    // remaining number of bananas after consumption, we want it
-    // as an integer multiple of maxToCarry.
+        // remaining number of bananas after consumption, we want it
+        // as an integer multiple of maxToCarry.
         double remainingBananas = maxToCarry * (int) (Math.ceil(totalBanana / maxToCarry) - 1.0);
 
-    // this is the distance you are able to travel before you
-    // reach ONE LESS round trip fetching bananas
-    // derived from eq: totalBanana - costPerKm * traveled = remaining bananas
+        // this is the distance you are able to travel before you
+        // reach ONE LESS round trip fetching bananas
+        // derived from eq: totalBanana - costPerKm * traveled = remaining bananas
 
         double traveled = (totalBanana - remainingBananas) / costPerKm;
 
-    // we are able to travel greater (or equal) than the remaining
-    // distance, so fetch the bananas right to the destination
+        // we are able to travel greater (or equal) than the remaining
+        // distance, so fetch the bananas right to the destination
         if (traveled >= remainingDistance)
             return totalBanana - remainingDistance * costPerKm;
 
-    // calculate recursively as we travel ONE less round trip now.
+        // calculate recursively as we travel ONE less round trip now.
         return transferBananas(remainingBananas, remainingDistance - traveled, maxToCarry, eatBananaPerKm);
     }
 
@@ -202,6 +201,20 @@ public class Interviewbitbacktracking {
         }
         return s.toString();
     }
+    /*
+    public String getPermutation(ArrayList<Integer> list,int k)
+	{
+	    int n=list.size();
+	    if(n==0) return "";
+
+	    int fact_n=fact(n-1);
+	    int index=k/fact_n;
+	    int num=list.get(index);
+	    list.remove(index);
+	    k%=fact_n;
+	    return num+getPermutation(list,k);
+	}
+     */
 
     private void getKthPermutation(ArrayList<Integer> res, int K, int index) {
         if (K == 1) {
@@ -238,6 +251,7 @@ public class Interviewbitbacktracking {
         return res;
     }
 
+    //Given a collection of numbers, return all possible permutations.
     public ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> A) {
         ArrayList<ArrayList<Integer>> res = new ArrayList<>();
         getAllPermutation(res, A, 0);
@@ -282,8 +296,7 @@ public class Interviewbitbacktracking {
         return res;
     }
 
-    private void placeQueen(ArrayList<ArrayList<String>> res, boolean[][] queen,
-                            int totalQueen, int queenPlaced, int row) {
+    private void placeQueen(ArrayList<ArrayList<String>> res, boolean[][] queen, int totalQueen, int queenPlaced, int row) {
         if (totalQueen == queenPlaced) {
             ArrayList<String> oneRes = new ArrayList<>();
             for (int i = 0; i < totalQueen; i++) {
@@ -340,7 +353,6 @@ public class Interviewbitbacktracking {
             }
         }
         //lower left diagonal
-        //upper right diagonal
         for (int i = u + 1, j = v - 1; i < a && j >= 0; i++, j--) {
             if (queen[i][j] == true) {
                 return false;
@@ -356,7 +368,7 @@ public class Interviewbitbacktracking {
         return true;
     }
 
-
+    //Given a digit string, return all possible letter combinations that the number could represent.
     public ArrayList<String> letterCombinations(String A) {
         ArrayList<String> res = new ArrayList<>();
         Map<Integer, String> keymap = new HashMap<>();
@@ -371,12 +383,7 @@ public class Interviewbitbacktracking {
         keymap.put(8, "tuv");
         keymap.put(9, "wxyz");
 
-        String key = keymap.get(A.charAt(0) - '0');
-        String word = new String();
-        for (int j = 0; j < key.length(); j++) {
-            wordsByLetterCombinations(keymap, res, A, 1, word + key.charAt(j));
-        }
-
+        wordsByLetterCombinations(keymap, res, A, 0, "");
         return res;
     }
 
@@ -395,6 +402,7 @@ public class Interviewbitbacktracking {
     }
 
 
+    //Given a collection of integers that might contain duplicates, S, return all possible subsets.
     public ArrayList<ArrayList<Integer>> subsetsWithDup(ArrayList<Integer> A) {
         A.sort((u, v) -> (u - v));
         ArrayList<ArrayList<Integer>> res = new ArrayList<>();
@@ -488,15 +496,10 @@ public class Interviewbitbacktracking {
         }
     }
 
+    //Given two integers n and k, return all possible combinations of k numbers out of 1 2 3 ... n.
     public ArrayList<ArrayList<Integer>> combine(int A, int B) {
         ArrayList<ArrayList<Integer>> res = new ArrayList<>();
-        ArrayList<Integer> combination = new ArrayList<>();
-
-        for (int i = 1; i <= A; i++) {
-            combination.add(i);
-            getAllCombination(res, combination, i + 1, A, B);
-            combination.remove(combination.size() - 1);
-        }
+        getAllCombination(res, new ArrayList<>(), 1, A, B);
         return res;
     }
 
@@ -514,6 +517,7 @@ public class Interviewbitbacktracking {
         }
     }
 
+    //Given a set of distinct integers, S, return all possible subsets lexicographically sorted.
     public ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> A) {
         A.sort((u, v) -> (u - v));
         ArrayList<ArrayList<Integer>> res = new ArrayList<>();

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class InterviewbitGreedy {
 
@@ -21,10 +22,119 @@ public class InterviewbitGreedy {
         //System.out.println(ibit.DistributeCandy(new ArrayList<>(Arrays.asList(7, 5, 2, 6))));
         //System.out.println(ibit.GasStation(new ArrayList<>(Arrays.asList(4, -4, 2)),new ArrayList<>(Arrays.asList(4, 0, 5))));
 
-        System.out.println(ibit.GasStation(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5)),
+/*        System.out.println(ibit.GasStation(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5)),
                 new ArrayList<>(Arrays.asList(3, 4, 5, 1, 2))));
-        System.out.println(ibit.calculateMinimumHP(new int[][]{{-2, -3, 3}, {-5, -10, 1}, {10, 30, -5}}));
+        System.out.println(ibit.calculateMinimumHP(new int[][]{{-2, -3, 3}, {-5, -10, 1}, {10, 30, -5}}));*/
 
+        //System.out.println(Arrays.toString(ibit.findSignatureCounts(new int[]{2, 1, 3})));
+        //  System.out.println(Arrays.toString(ibit.countSubarrays(new int[]{3, 4, 1, 6, 2})));
+//        System.out.println(Arrays.toString(ibit.findMinArray(new int[]{7, 6, 9, 2, 1}, 3)));
+
+        System.out.println(ibit.minOverallAwkwardness(new int[]{5, 10, 6, 8}));
+    }
+
+
+    public int minOverallAwkwardness(int[] arr) {
+        Arrays.sort(arr);
+        int diff1 = 0;
+        for (int i = 0 + 2; i < arr.length; i += 2) {
+            diff1 = Math.max(diff1, arr[i] - arr[i - 2]);
+        }
+        int diff2 = 0;
+        for (int i = 1+2; i < arr.length; i += 2) {
+            diff2 = Math.max(diff2, arr[i] - arr[i - 2]);
+        }
+        return Math.max(diff1, Math.max(diff2, arr[1] - arr[0]));
+    }
+
+    //https://www.hackerearth.com/practice/algorithms/greedy/basics-of-greedy-algorithms/practice-problems/algorithm/swap-it-2/description/
+    public int[] findMinArray(int[] arr, int k) {
+        for (int i = 0; i < arr.length && k > 0; i++) {
+
+            int pos = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (j - i > k)
+                    break;
+                if (arr[j] < arr[pos]) {
+                    pos = j;
+                }
+            }
+            int tmp;
+            for (int j = pos; j > i; j--) {
+                tmp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = tmp;
+            }
+            k -= pos - i;
+        }
+
+        return arr;
+    }
+
+    //579606/count-contiguous-subarrays
+    int[] countSubarrays(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return new int[]{};
+        }
+        int n = arr.length;
+
+        int[] nextGreater = new int[n];
+        int[] prevGreater = new int[n];
+        Stack<Integer> s = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!s.empty() && arr[s.peek()] < arr[i]) {
+                nextGreater[s.pop()] = i;
+            }
+            s.push(i);
+        }
+        while (!s.empty()) {
+            int top = s.pop();
+            nextGreater[top] = -1;
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!s.empty() && arr[s.peek()] < arr[i]) {
+                prevGreater[s.pop()] = i;
+            }
+            s.push(i);
+        }
+        while (!s.empty()) {
+            int top = s.pop();
+            prevGreater[top] = -1;
+        }
+
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (nextGreater[i] == prevGreater[i] && nextGreater[i] == -1) {
+                res[i] = n;
+            } else if (nextGreater[i] == -1) {
+                res[i] = n - prevGreater[i] - 1;
+            } else if (prevGreater[i] == -1) {
+                res[i] = nextGreater[i];
+            } else {
+                res[i] = nextGreater[i] - prevGreater[i] - 1;
+            }
+        }
+
+        return res;
+    }
+
+    //Passing Yearbooks
+    int[] findSignatureCounts(int[] arr) {
+        int[] sign = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i]--;
+            sign[i] = 1;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            int start = i;
+            while (arr[i] != start) {
+                sign[start]++;
+                start = arr[start];
+            }
+        }
+        return sign;
     }
 
     public int calculateMinimumHP(int[][] dungeon) {
@@ -176,7 +286,34 @@ public class InterviewbitGreedy {
             occupied++;
         }
         return jumps;
+
+       /*
+       public int seats(String a) {
+	    int numLeft = 0;
+	    int numRight = 0;
+	    for (int i = 0; i < a.length(); ++i) {
+	        if (a.charAt(i) == OCCUPIED) {
+	            ++numRight;
+	        }
+	    }
+
+	    long moves = 0;
+	    for (int i = 0; i < a.length(); ++i) {
+	        if (numRight == 0) {
+	            break;
+	        } else if (a.charAt(i) == OCCUPIED) {
+                ++numLeft;
+                --numRight;
+	        } else {
+	            moves += Math.min(numLeft, numRight);
+	        }
+	    }
+	    return (int) (moves % MOD);
+	}
+        */
+
     }
+
 
     int Bulbs(ArrayList<Integer> bulbs) {
         int flips = 0;

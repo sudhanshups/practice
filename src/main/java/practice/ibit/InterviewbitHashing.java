@@ -1,23 +1,21 @@
 package practice.ibit;
 
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
 
-class RandomListNode {
-    int label;
-    RandomListNode next, random;
-
-    RandomListNode(int x) {
-        this.label = x;
-    }
-}
 
 public class InterviewbitHashing {
+    class RandomListNode {
+        int label;
+        RandomListNode next, random;
+
+        RandomListNode(int x) {
+            this.label = x;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -96,7 +94,7 @@ public class InterviewbitHashing {
 /*        ArrayList<String> words = new ArrayList<>(Arrays.asList("foo", "bar"));
         System.out.println(ibit.findSubstringIndices("barfoothefoobarman", words));*/
 
-//        System.out.println(ibit.getSubstringWithEqual012("012012"));
+        System.out.println(ibit.getSubstringWithEqual012("0001111122012"));
 //        System.out.println(ibit.countSubarrWithEqualZeroAndOne(new int[]{0, 1, 0, 1}, 4));
 
     }
@@ -124,6 +122,30 @@ public class InterviewbitHashing {
             count += um.get(0);
 
         return count;
+    }
+
+    class Pair<U, V> {
+        U key;
+        V value;
+
+        Pair(U u, V v) {
+            this.key = u;
+            this.value = v;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Pair)) return false;
+            Pair<?, ?> pair = (Pair<?, ?>) o;
+            return Objects.equals(key, pair.key) &&
+                    Objects.equals(value, pair.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
     }
 
     int getSubstringWithEqual012(String str) {
@@ -154,6 +176,7 @@ public class InterviewbitHashing {
         return res;
     }
 
+    //starting-indices-of-the-substrings-in-string/
     public ArrayList<Integer> findSubstringIndices(String S, ArrayList<String> words) {
         ArrayList<Integer> res = new ArrayList<>();
 
@@ -196,6 +219,7 @@ public class InterviewbitHashing {
         return res;
     }
 
+    //points-on-the-straight-line/
     public int maxPoints(ArrayList<Integer> a, ArrayList<Integer> b) {
         int maxPoints = 0;
         if (a.size() <= 2) {
@@ -208,6 +232,7 @@ public class InterviewbitHashing {
             int vertical = 0;
             int x1 = a.get(i);
             int y1 = b.get(i);
+            int lMax = 0;
             for (int j = i + 1; j < a.size(); j++) {
                 int x2 = a.get(j);
                 int y2 = b.get(j);
@@ -230,6 +255,7 @@ public class InterviewbitHashing {
                     } else {
                         map.put(slope, 1);
                     }
+                    lMax = Math.max(lMax, map.get(slope));
                 }
             }
 
@@ -245,136 +271,29 @@ public class InterviewbitHashing {
         return maxPoints;
     }
 
-/*
-string Solution::fractionToDecimal(int numerator, int denominator) {
-    string sol = "";
+    public String fractionToDecimal(int numerator, int denominator) {
+        long a = numerator, b = denominator;
 
-    long long int num = numerator;
-    long long int den = denominator;
+        if (a % b == 0) return String.valueOf(a / b);
 
-    bool neg = false;
+        Map<Long, Integer> map = new HashMap<>();
+        StringBuilder res = new StringBuilder();
 
-    if(num < 0){
-        neg = true;
-        num = 0 - num;
-    }
-    if(den < 0){
-        if(neg){
-            neg = false;
+        if ((a > 0 && b < 0) || (a < 0 && b > 0)) res.append("-");
+
+        a = Math.abs(a);
+        b = Math.abs(b);
+        res.append(a / b + ".");
+        a = (a % b) * 10;
+
+        while (!map.containsKey(a)) {
+            map.put(a, res.length());
+            res.append(String.valueOf(a / b));
+            a = (a % b) * 10;
+            if (a == 0) return res.toString();
         }
-        else{
-            neg = true;
-        }
-        den = 0 - den;
+        return res.insert(map.get(a), "(").append(")").toString();
     }
-
-    unordered_map<int, int> myMap;
-
-    long long int initial = num/den;
-
-    if(num == 0){
-        return "0";
-    }
-
-    if(neg){
-        sol = sol + "-";
-    }
-
-    sol = sol + to_string(initial);
-
-    num = num%den;
-
-    if(num == 0){
-        return sol;
-    }
-
-    sol = sol + ".";
-
-    bool repeat = false;
-    int val;
-    while(num != 0 && repeat == false){
-        num = num*10;
-        if(myMap.find(num) != myMap.end()){
-            repeat = true;
-            val = myMap[num];
-            break;
-        }
-        else{
-            myMap.insert({num, sol.size()});
-        }
-        int temp = num/den;
-        sol = sol + to_string(temp);
-        num = num%den;
-    }
-
-    if(repeat){
-        sol = sol + ")";
-        sol.insert(val, "(");
-    }
-
-    return sol;
-}
- */
-
-    public String fraction(int A, int B) {
-        boolean isNeg = (A < 0 && B >= 0) || (A >= 0 && B < 0);
-        long a = Math.abs(A * 1l);
-        long b = Math.abs(B * 1l);
-
-        StringBuilder pre = new StringBuilder();
-        StringBuilder post = new StringBuilder();
-
-        if (a == 0)
-            return "0";
-
-        if (b > a) {
-            pre.append("0.");
-        } else if (b == a) {
-            pre.append("1");
-            a -= b;
-        } else {
-            pre.append(a / b);
-            a = a % b;
-            if (a > 0) {
-                pre.append(".");
-            }
-        }
-        long d = 0;
-        Set<String> set = new HashSet<>();
-
-        while (a < b) {
-            a = a * 10;
-            post.append("0");
-
-        }
-        while (a != 0) {
-            a = a * 10;
-            d = a / b;
-            a %= b;
-
-            if (set.contains(Long.toString(d))) {
-                String portS = post.toString();
-                String nonRep = portS.substring(0, portS.indexOf(Long.toString(d)));
-                String repe = portS.substring(portS.indexOf(Long.toString(d)), portS.length());
-                post = new StringBuilder();
-                post.append(nonRep);
-                if (repe.length() > 0) {
-                    post.append("(" + repe + ")");
-                }
-                break;
-            }
-            post.append(d);
-            set.add(Long.toString(d));
-            //set.add(post.toString());
-
-        }
-
-        if (isNeg)
-            return "-" + pre.append(post).toString();
-        else
-            return pre.append(post).toString();
-    }
-
 
     public String minWindow(String A, String B) {
 
@@ -401,9 +320,7 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
 
             if (count == B.length()) {
                 while (stringMap[A.charAt(start)] > patMap[A.charAt(start)] || patMap[A.charAt(start)] == 0) {
-                    if (stringMap[A.charAt(start)] > patMap[A.charAt(start)]) {
-                        stringMap[A.charAt(start)]--;
-                    }
+                    stringMap[A.charAt(start)]--;
                     start++;
                 }
 
@@ -440,7 +357,6 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
         Queue<Integer> queue = new LinkedList<>();
         Map<Character, Integer> charToIndex = new HashMap<>();
         int l = 0;
-        int start = 0;
         for (int i = 0; i < A.length(); i++) {
             if (charToIndex.containsKey(A.charAt(i))) {
                 while (!queue.isEmpty() && queue.peek() <= charToIndex.get(A.charAt(i))) {
@@ -451,7 +367,6 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
             queue.add(i);
             if (l < queue.size()) {
                 l = queue.size();
-                start = queue.peek();
             }
         }
 
@@ -691,17 +606,13 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
                     }
                 }
                 j++;
-                if (j < A.size() && A.get(j - 1).equals(A.get(j))) {
-                    while (j < A.size() && A.get(j - 1).equals(A.get(j))) {
-                        j++;
-                    }
+                while (j < A.size() && A.get(j - 1).equals(A.get(j))) {
+                    j++;
                 }
             }
             i++;
-            if (i < A.size() && A.get(i - 1).equals(A.get(i))) {
-                while (i < A.size() && A.get(i - 1).equals(A.get(i))) {
-                    i++;
-                }
+            while (i < A.size() && A.get(i - 1).equals(A.get(i))) {
+                i++;
             }
         }
         return res;
@@ -773,7 +684,7 @@ string Solution::fractionToDecimal(int numerator, int denominator) {
     }
 
     public int colorful(int A) {
-        char[] charArray = new Integer(A).toString().toCharArray();
+        char[] charArray = Integer.toString(A).toCharArray();
         HashMap<Long, Boolean> map = new HashMap<>();
         for (int i = 0; i < charArray.length; i++) {
             long product = 1;

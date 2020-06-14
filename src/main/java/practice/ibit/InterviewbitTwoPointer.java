@@ -85,13 +85,13 @@ public class InterviewbitTwoPointer {
 
 //        System.out.println(ibit.lengthOfLongestSubstringKDistinct("s", 0));
 
-        System.out.println(ibit.subarraySum(new int[]{1,1,1,1}, 2));
+//        System.out.println(ibit.subarraySum(new int[]{1, 1, 1, 1}, 2));
 
     }
 
     public int subarraySum(int[] nums, int k) {
         int count = 0, sum = 0;
-        HashMap < Integer, Integer > map = new HashMap < > ();
+        HashMap<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
@@ -110,7 +110,7 @@ public class InterviewbitTwoPointer {
         int start = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            map.put(c, map.getOrDefault(c,0) + 1);
+            map.put(c, map.getOrDefault(c, 0) + 1);
             len++;
 
             while (map.size() > k) {
@@ -358,6 +358,22 @@ public class InterviewbitTwoPointer {
         while (k < n) {
             nums1[i++] = nums2[k++];
         }
+        /* Another sol is to start from back, and put it in desc order
+        // two get pointers for nums1 and nums2
+        int p1 = m - 1;
+        int p2 = n - 1;
+        // set pointer for nums1
+        int p = m + n - 1;
+
+        // while there are still elements to compare
+        while ((p1 >= 0) && (p2 >= 0))
+          // compare two elements from nums1 and nums2
+          // and add the largest one in nums1
+          nums1[p--] = (nums1[p1] < nums2[p2]) ? nums2[p2--] : nums1[p1--];
+
+        // add missing elements from nums2
+        System.arraycopy(nums2, 0, nums1, 0, p2 + 1);
+         */
     }
 
     static int searchinPivotedArray(int arr[], int l, int h, int key) {
@@ -755,6 +771,7 @@ public class InterviewbitTwoPointer {
         return unique + 1;
     }
 
+    //sorted array, check if given diff exist
     public int diffPossible(ArrayList<Integer> array, int lf) {
         if (array.size() <= 1)
             return 0;
@@ -779,6 +796,7 @@ public class InterviewbitTwoPointer {
         return 0;
     }
 
+    //Counting Triangles
     public int nTriangle(ArrayList<Integer> A) {
         A.sort((u, v) -> (u - v));
         long res = 0;

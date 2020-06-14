@@ -52,7 +52,8 @@ public class InterviewbitLinkList {
         head.next = new ListNode(3);
         head.next.next = new ListNode(5);
         head.next.next.next = new ListNode(7);
-       // ibit.printL(ibit.reverseBetween(head, 5,4));
+        ibit.printL(ibit.reverse(head));
+        // ibit.printL(ibit.reverseBetween(head, 5,4));
 
     }
 
@@ -102,7 +103,7 @@ public class InterviewbitLinkList {
             count++;
             cur = cur.next;
         }
-        if (count == 0 || B % count == 0 ) {
+        if (count == 0 || B % count == 0) {
             return A;
         }
         B = B % count;
@@ -236,13 +237,13 @@ public class InterviewbitLinkList {
 
         pre = null;
         head = A;
-        ListNode next = A.next;
+        ListNode dummy = head.next;
         while (head != null) {
             head.next = pre;
             pre = head;
-            head = next;
-            if (next != null)
-                next = next.next;
+            head = dummy;
+            if (dummy != null)
+                dummy = dummy.next;
         }
         head = pre;
         if (!even && head.next != null) {
@@ -260,19 +261,23 @@ public class InterviewbitLinkList {
         return 1;
     }
 
+    /*
+     * 1 2 3
+     * key is to have pointer to 1 and head of new list
+     * just for loop while head->next is not null,  and swap
+     */
     private ListNode reverse(ListNode head) {
         if (head == null) {
             return head;
         }
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
+        ListNode dummy = head;
         while (head.next != null) {
             ListNode temp = head.next;
             head.next = head.next.next;
-            temp.next = dummy.next;
-            dummy.next = temp;
+            temp.next = dummy;
+            dummy = temp;
         }
-        return dummy.next;
+        return dummy;
     }
 
 

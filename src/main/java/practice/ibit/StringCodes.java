@@ -1,4 +1,4 @@
-package practice;
+package practice.ibit;
 
 import java.util.*;
 
@@ -6,8 +6,8 @@ public class StringCodes {
 
     public static void main(String[] args) {
         StringCodes s = new StringCodes();
-        List<String> strings = s.findStrobogrammatic(2);
-        System.out.println(strings);
+//        List<String> strings = s.findStrobogrammatic(2);
+//        System.out.println(strings);
 
         //System.out.println(s.decodeString("3[a]2[bc]"));
 
@@ -16,8 +16,39 @@ public class StringCodes {
         //System.out.println(s.groupStrings(new String[]{"ace", "ay"}));
 
         //rows = 3, cols = 6, sentence = ["a", "bcd", "e"]
-        System.out.println(s.wordsTyping(new String[]{"a", "bcd", "e"}, 3, 6));
+//        System.out.println(s.wordsTyping(new String[]{"a", "bcd", "e"}, 3, 6));
 
+//        System.out.println(s.findEncryptedWord(new String("abcd")));
+        System.out.println(s.canGetExactChange(95, new int[]{5, 10, 25, 100, 200}));
+
+    }
+
+    //recursion. Same can be done with DP too
+    boolean canGetExactChange(int targetMoney, int[] denominations) {
+        if (targetMoney == 0) {
+            return true;
+        }
+        if (targetMoney < 0 || denominations.length == 0) {
+            return false;
+        }
+        boolean found = false;
+        found = found || canGetExactChange(targetMoney - denominations[0], denominations);
+
+        int[] a = new int[denominations.length - 1];
+        System.arraycopy(denominations, 1, a, 0, a.length);
+        found = found || canGetExactChange(targetMoney, a);
+        return found;
+    }
+
+    public String findEncryptedWord(String s) {
+        String sub = new String();
+        if (s.length() == 0) {
+            return sub;
+        }
+        sub += s.charAt((s.length() - 1) / 2);
+        sub += findEncryptedWord(s.substring(0, (s.length() - 1) / 2));
+        sub += findEncryptedWord(s.substring((s.length() - 1) / 2 + 1));
+        return sub;
     }
 
     public int wordsTyping(String[] sentence, int rows, int cols) {

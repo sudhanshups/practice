@@ -33,8 +33,8 @@ public class InterviewbitQueue {
         System.out.println(ibit.nextGreater(A));
         //35 42 42 -1 28 39 -1 28 -1
 
-/*        int[][] arr = new int[][]{{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
-        System.out.println(ibit.reconstructQueue(arr));*/
+        int[][] arr = new int[][]{{7, 0}, {4, 4}, {7, 1}, {5, 0}, {6, 1}, {5, 2}};
+        System.out.println(ibit.reconstructQueue(arr));
     }
 
     //input [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
@@ -70,6 +70,7 @@ public class InterviewbitQueue {
         return new ArrayList<>(Arrays.stream(res).boxed().collect(Collectors.toList()));
     }
 
+    //evaluate-expression/
     public int evaluateReversePolish(final List<String> A) {
         int top;
         Stack<Integer> s = new Stack<>();
@@ -143,6 +144,7 @@ public class InterviewbitQueue {
     }
 
 
+    //rain-water-trapped/
     public int RainWaterTrap(final List<Integer> A) {
         int n = A.size();
         int[] leftMax = new int[n];
@@ -160,10 +162,30 @@ public class InterviewbitQueue {
         for (int i = 1; i < A.size() - 1; i++) {
             maxWater += Math.min(leftMax[i], rightMax[i]) - A.get(i);
         }
-
         return maxWater;
+
+
+/*        int a = 0;
+        int b = A.size() - 1;
+        int max = 0;
+        int leftmax = 0;
+        int rightmax = 0;
+        while (a <= b) {
+            leftmax = Math.max(leftmax, A.get(a));
+            rightmax = Math.max(rightmax, A.get(b));
+            if (leftmax < rightmax) {
+                max += (leftmax - A.get(a));       // leftmax is smaller than rightmax, so the (leftmax-A[a]) water can be stored
+                a++;
+            } else {
+                max += (rightmax - A.get(b));
+                b--;
+            }
+        }
+        return max;*/
+
     }
 
+    //sliding-window-maximum/
     public ArrayList<Integer> slidingMaximum(final List<Integer> A, int B) {
         Deque<Integer> queue = new LinkedList<>();
         ArrayList<Integer> res = new ArrayList<>();
@@ -192,12 +214,12 @@ public class InterviewbitQueue {
         return res;
     }
 
+    //largest-rectangle-in-histogram/
     public int largestRectangleArea(ArrayList<Integer> A) {
         Stack<Integer> s = new Stack<>();
         int maxArea = 0;
         int i;
         for (i = 0; i < A.size(); i++) {
-            //if(!s.isEmpty() && A.get(s.peek()).compareTo(A.get(i)) < 0){
             while (!s.isEmpty() && A.get(s.peek()).compareTo(A.get(i)) > 0) {
                 int topI = s.pop();
                 maxArea = Math.max(maxArea, A.get(topI) * (s.empty() ? i : i - s.peek() - 1));
@@ -213,9 +235,11 @@ public class InterviewbitQueue {
 
     }
 
+    //nearest-smaller-element/
     public ArrayList<Integer> prevSmaller(ArrayList<Integer> A) {
         Stack<Integer> stack = new Stack<>();
         ArrayList<Integer> res = new ArrayList<>();
+
         for (int a : A) {
             while (!stack.empty() && stack.peek() >= a) {
                 stack.pop();
@@ -233,6 +257,7 @@ public class InterviewbitQueue {
     }
 
 
+    //redundant-braces/
     public int braces(String A) {
         Stack<Character> stack = new Stack<>();
         char[] ch = A.toCharArray();

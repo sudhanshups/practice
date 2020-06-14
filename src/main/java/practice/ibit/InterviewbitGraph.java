@@ -119,10 +119,93 @@ public class InterviewbitGraph {
 
 //        System.out.println(ibit.numIslands2(3, 3, new int[][]{{0, 0}, {0, 1}, {1, 2}, {2, 1}}));
         //System.out.println(ibit.numIslands2(3, 3, new int[][]{{0, 0}, {0, 1}, {1, 2}, {1, 2}}));
-        System.out.println(ibit.numIslands2(3, 3, new int[][]{{0, 0}, {0, 1}, {1, 2}, {2, 1}, {1, 0}, {0, 0}, {2, 2}, {1, 2}, {1, 1}, {0, 1}}));//[1,1,2,3,3,3,2,2,1,1]
+//        System.out.println(ibit.numIslands2(3, 3, new int[][]{{0, 0}, {0, 1}, {1, 2}, {2, 1}, {1, 0}, {0, 0}, {2, 2}, {1, 2}, {1, 1}, {0, 1}}));//[1,1,2,3,3,3,2,2,1,1]
         // System.out.println(ibit.numIslands2(3, 3, new int[][]{{0, 1}, {1, 2}, {2, 1}, {1, 0}, {0, 2}, {0, 0}, {1, 1}}));        //[1,2,3,4,3,2,1]
 
+        System.out.println(ibit.minOperations(new int[]{4,3,5,1,2}));
+    }
 
+    //Minimizing Permutations P = (3, 1, 2) - > (1,2,3) , total 2 rotation.
+    public int minOperations(int[] arr) {
+        int ans = 0;
+        if (check(arr)) {
+            return ans;
+        }
+        Set<String> set = new HashSet<>();
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(arr);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) {
+                int[] per = queue.poll();
+                int i = 0;
+                while (per[i] == i + 1) {
+                    i++;
+                }
+                for (; i < per.length; i++) {
+                    //reverse from i to j
+                    for (int j = i + 1; j < per.length; j++) {
+                        int[] next = reverse(per, i, j);
+                        String perString = stringify(next);
+                        if (set.contains(perString)) {
+                            continue;
+                        }
+                        if (check(next)) {
+                            return ans + 1;
+                        }
+                        set.add(perString);
+                        queue.add(next);
+
+                        //reverse from j to k
+                        for (int k = j + 1; k < per.length; k++) {
+                            int[] nextK = reverse(per, i, j);
+                            String perStringK = stringify(nextK);
+                            if (set.contains(perStringK)) {
+                                continue;
+                            }
+                            if (check(nextK)) {
+                                return ans + 1;
+                            }
+                            set.add(perStringK);
+                            queue.add(nextK);
+                        }
+                    }
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+
+    private String stringify(int[] arr) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            s.append(arr[i]).append("#");
+        }
+        return s.toString();
+    }
+
+    private int[] reverse(int arr[], int start, int end) {
+        int[] copy = new int[arr.length];
+        System.arraycopy(arr, 0, copy, 0, arr.length);
+        int tmp;
+        while (start < end) {
+            tmp = arr[end];
+            arr[end] = arr[start];
+            arr[start] = tmp;
+            start++;
+            end--;
+        }
+        return copy;
+    }
+
+    private boolean check(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != i + 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
@@ -195,6 +278,7 @@ return [6.0, 0.5, -1.0, 1.0, -1.0 ].
             this.parent = index;
             this.value = 1d;
         }
+
     }
 
     //count no of island after getting each position
@@ -594,5 +678,6 @@ return [6.0, 0.5, -1.0, 1.0, -1.0 ].
         }
         return result;
     }
+
 
 }

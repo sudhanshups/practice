@@ -34,12 +34,15 @@ public class InterviewbitTree {
         root.right.left.right = new TreeNode(5);
 
 /*
-        6
-    5       4
-4        9      5
+        1
+    2       3
+        4
+            5
 */
 
 //        System.out.println(ibit.verticalOrderTraversal(root));
+//        System.out.println(ibit.verticalOrderTraversalRecu(root));
+
 //        System.out.println(ibit.inorderTraversal(root));
 //        System.out.println(ibit.postOrderTraversal(root));
 //        System.out.println(ibit.preorderTraversal(root));
@@ -70,8 +73,8 @@ public class InterviewbitTree {
 //        System.out.println(ibit.prefix(new ArrayList<>(Arrays.asList("zebra", "dog", "duck", "dove"))));
 
 //        System.out.println(ibit.lca(root, 1, 2));
-        TreeNode result = ibit.flatenBTToLinkList(root);
-        System.out.println(result);
+        /*TreeNode result = ibit.flatenBTToLinkList(root);
+        System.out.println(result);*/
 
 /*        ArrayList<Integer> height = new ArrayList<>(Arrays.asList(5, 3, 4, 6, 1, 2));
         ibit.arrange(height, new ArrayList<>(Arrays.asList(0, 1, 2, 0, 3, 2)));
@@ -80,6 +83,7 @@ public class InterviewbitTree {
 
         TreeNode root1 = new TreeNode(4);
         root1.left = new TreeNode(2);
+        root1.right = new TreeNode(6);
         root1.left.left = new TreeNode(7);
 
         root1.left.right = new TreeNode(3);
@@ -88,12 +92,13 @@ public class InterviewbitTree {
 /*
           4
     2          6
-       3   5     7
+7      3
+      5  7
 */
         //System.out.println("--"+ibit.isValidBST(root1));
         //System.out.println(ibit.isValidBST(root));
 
-        //System.out.println(ibit.minCameraCover(root1));
+        System.out.println(ibit.minCameraCover(root1));
 /*        System.out.println(ibit.lowestCommonAncestor(root1, 7, 2));
 
         System.out.println(ibit.diameterOfBinaryTree(root1));*/
@@ -109,13 +114,31 @@ public class InterviewbitTree {
         //System.out.println(ibit.distributeCoins(root2));
         //System.out.println();
 
-        TreeNode root3 = new TreeNode(1);
+/*        TreeNode root3 = new TreeNode(1);
         root3.right = new TreeNode(3);
         root3.right.left = new TreeNode(4);
         root3.right.right = new TreeNode(4);
         root3.right.right.right = new TreeNode(5);
-        System.out.println(ibit.longestConsecutiveParentTOChildPath(root3));
+        System.out.println(ibit.longestConsecutiveParentTOChildPath(root3));*/
 
+    }
+
+    public int leftVisibleNodes(Node root) {
+        Height height = new Height(-1);
+        return leftView(root,0,height);
+    }
+    private int leftView(Node root,int h,Height height){
+        int l =0;
+        if(root==null){
+            return l;
+        }
+        if(h>height.height){
+            l+=1;
+            height.height = h;
+        }
+        l+= leftView(root.left,h+1,height);
+        l+= leftView(root.right,h+1,height);
+        return l;
     }
 
     //serialize a tree
@@ -255,8 +278,8 @@ public class InterviewbitTree {
         if (currentNode == null) {
             return false;
         }
-        int left = this.recurseTree(currentNode.left, p, q) ? 1 : 0;        // Left Recursion. If left recursion returns true, set left = 1 else 0
-        int right = this.recurseTree(currentNode.right, p, q) ? 1 : 0;        // Right Recursion
+        int left = recurseTree(currentNode.left, p, q) ? 1 : 0;        // Left Recursion. If left recursion returns true, set left = 1 else 0
+        int right = recurseTree(currentNode.right, p, q) ? 1 : 0;        // Right Recursion
         int mid = (currentNode.val == p || currentNode.val == q) ? 1 : 0;// If the current node is one of p or q
         if (mid + left + right >= 2) { //If any two of the flags left, right or mid become True
             this.ans1 = currentNode;
@@ -266,36 +289,36 @@ public class InterviewbitTree {
 
     public TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
         // Traverse the tree
-        this.recurseTree(root, p, q);
+        boolean found = recurseTree(root, p, q);
         return this.ans1;
     }
 
     int ans;
 
     public int minCameraCover(TreeNode root) {
-        Set<TreeNode> covered;
-        ans = 0;
-        covered = new HashSet();
+        Set<TreeNode> covered = new HashSet<>();
         covered.add(null);
+        ans = 0;
 
         dfs(root, null, covered);
         return ans;
     }
 
-    public void dfs(TreeNode node, TreeNode par, Set<TreeNode> covered) {
-        if (node != null) {
-            dfs(node.left, node, covered);
-            dfs(node.right, node, covered);
+    private void dfs(TreeNode node, TreeNode par, Set<TreeNode> covered) {
+        if (node == null) {
+            return;
+        }
+        dfs(node.left, node, covered);
+        dfs(node.right, node, covered);
 
-            if (par == null && !covered.contains(node) ||
-                    !covered.contains(node.left) ||
-                    !covered.contains(node.right)) {
-                ans++;
-                covered.add(node);
-                covered.add(par);
-                covered.add(node.left);
-                covered.add(node.right);
-            }
+        if ((par == null && !covered.contains(node)) ||
+                !covered.contains(node.left) ||
+                !covered.contains(node.right)) {
+            ans++;
+            covered.add(node);
+            covered.add(par);
+            covered.add(node.left);
+            covered.add(node.right);
         }
     }
 
@@ -387,6 +410,7 @@ public class InterviewbitTree {
     }
     //===//
 
+    //flatten-binary-tree-to-linked-list/
     public TreeNode flatenBTToLinkList(TreeNode A) {
         if (A == null) {
             return null;
@@ -434,16 +458,66 @@ public class InterviewbitTree {
         if (A.val == data) {
             return true;
         }
-        if (A.left != null && findPath(A.left, path1, data)) {
+        if (findPath(A.left, path1, data)) {
             return true;
         }
 
-        if (A.right != null && findPath(A.right, path1, data)) {
+        if (findPath(A.right, path1, data)) {
             return true;
         }
         path1.remove(path1.size() - 1);
         return false;
     }
+
+    //shortest unique prefix
+    public ArrayList<String> prefix1(ArrayList<String> a) {
+        TrieNode root = new TrieNode();
+
+        for (String s : a) {
+            insert(root, s);
+        }
+
+        ArrayList<String> prefixes = new ArrayList<>();
+        for (String s : a) {
+            prefixes.add(findPrefix(root, s));
+        }
+
+        return prefixes;
+    }
+
+    //Trie best
+    void insert(TrieNode root, String s) {
+        TrieNode node = root;
+
+        for (Character ch : s.toCharArray()) {
+            node = node.children.computeIfAbsent(ch, c -> new TrieNode());
+            node.count++;
+        }
+    }
+
+    String findPrefix(TrieNode root, String s) {
+        TrieNode node = root;
+        char[] word = s.toCharArray();
+        int i = 0;
+
+        StringBuilder prefix = new StringBuilder();
+        while (true) {
+            char ch = word[i++];
+
+            prefix.append(ch);
+            node = node.children.get(ch);
+
+            if (node.count == 1) {
+                return prefix.toString();
+            }
+        }
+    }
+
+    class TrieNode {
+        int count = 0;
+        Map<Character, TrieNode> children = new HashMap<>();
+    }
+    //
 
     // shortest unique prefix
     public ArrayList<String> prefix(ArrayList<String> A) {
@@ -561,9 +635,8 @@ public class InterviewbitTree {
     }
 
 
-    //connect next right
+    //connect next right #recheck
     public void connect(TreeLinkNode root) {
-        TreeLinkNode temp = null;
         if (root == null)
             return;
         root.nextRight = null;
@@ -740,14 +813,13 @@ public class InterviewbitTree {
     }
     //=====//
 
-
+    //www.interviewbit.com/problems/inorder-traversal-of-cartesian-tree/
     // Given an inorder traversal of a cartesian tree, construct the tree.
     public TreeNode buildTree(ArrayList<Integer> A) {
         if (CollectionUtils.isEmpty(A)) {
             return null;
         }
-        TreeNode root = null;
-        root = buildCartesianTree(A, 0, A.size() - 1);
+        TreeNode root = buildCartesianTree(A, 0, A.size() - 1);
         return root;
     }
 
@@ -926,6 +998,7 @@ public class InterviewbitTree {
         return 1;
     }
 
+    //sum-root-to-leaf-numbers/
     public int sumNumbers(TreeNode A) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
         if (A == null) {
@@ -935,7 +1008,6 @@ public class InterviewbitTree {
         int mod = 1003;
         int totalSum = 0;
         for (ArrayList<Integer> list : result) {
-            int mul = 1;
             int num = 0;
             for (Integer i : list) {
                 num = num * 10 + i;
@@ -997,9 +1069,6 @@ public class InterviewbitTree {
 
     public ArrayList<ArrayList<Integer>> pathSum(TreeNode A, int B) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        if (A == null) {
-            return result;
-        }
         getValidPathSum(A, B, new ArrayList<>(), result);
         return result;
     }
@@ -1014,12 +1083,8 @@ public class InterviewbitTree {
             return;
         }
 
-        if (A.left != null) {
-            getValidPathSum(A.left, sum - A.val, currentPath, result);
-        }
-        if (A.right != null) {
-            getValidPathSum(A.right, sum - A.val, currentPath, result);
-        }
+        getValidPathSum(A.left, sum - A.val, currentPath, result);
+        getValidPathSum(A.right, sum - A.val, currentPath, result);
         return;
     }
 
@@ -1184,5 +1249,23 @@ public class InterviewbitTree {
         return new ArrayList<>(verticalNodesWithDistance.values());
     }
 
+    public ArrayList<ArrayList<Integer>> verticalOrderTraversalRecu(TreeNode A) {
+
+        Map<Integer, ArrayList<Integer>> verticalNodesWithDistance = new TreeMap<>();
+        verticalRec(A, verticalNodesWithDistance, 0);
+        return new ArrayList<>(verticalNodesWithDistance.values());
+    }
+
+    private void verticalRec(TreeNode A, Map<Integer, ArrayList<Integer>> verticalNodesWithDistance, int hd) {
+        if (A == null) {
+            return;
+        }
+        if (!verticalNodesWithDistance.containsKey(hd)) {
+            verticalNodesWithDistance.put(hd, new ArrayList<>());
+        }
+        verticalNodesWithDistance.get(hd).add(A.val);
+        verticalRec(A.left, verticalNodesWithDistance, hd - 1);
+        verticalRec(A.right, verticalNodesWithDistance, hd + 1);
+    }
 
 }

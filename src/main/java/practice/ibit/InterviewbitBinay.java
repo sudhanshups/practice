@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -20,11 +19,18 @@ public class InterviewbitBinay {
         System.out.println(ibit.AllocateBooks(pages, students));
         System.out.println(ibit.AllocateBooksBinarySearch(pages, students));*/
 
-
+/*
         ArrayList<Integer> board = new ArrayList<>();
         board.addAll(new ArrayList<>(Arrays.asList(1000000, 1000000)));
         System.out.println(ibit.PainterPartition(1, 1000000, board));
         System.out.println(ibit.PainterPartitionBinarySearch(1, 1000000, board));
+*/
+
+/*        int[] arr = new int[]{1, 1, 2, 3, 3, 4, 4, 4, 5, 5};
+        int ele = 4;
+        System.out.println(ibit.countOccurence(arr, ele));*/
+
+//        System.out.println(ibit.getBillionUsersDay(new float[]{1.01f, 1.02f}));
 
     }
 
@@ -115,7 +121,7 @@ public class InterviewbitBinay {
         int mid;
         while (low <= high) {
             mid = (low + high) / 2;
-            if (canBedistributed(pages, students, mid)) {
+            if (canBedistributed(pages, mid) <= students) {
                 minPageRead = Math.min(minPageRead, mid);
                 high = mid - 1;
             } else {
@@ -126,25 +132,19 @@ public class InterviewbitBinay {
         return minPageRead;
     }
 
-    boolean canBedistributed(ArrayList<Integer> pages, int students, int pagesPerStudent) {
+    int canBedistributed(ArrayList<Integer> pages, int pagesPerStudent) {
         int count = 1;
-        int pagesCount = 0;
+        int pagesSum = 0;
         for (Integer page : pages) {
-            if (page > pagesPerStudent) {
-                return false;
-            }
-
-            if (pagesCount + page > pagesPerStudent) {
+            if (pagesSum + page > pagesPerStudent) {
                 count++;
-                pagesCount = page;
-                if (count > students)
-                    return false;
+                pagesSum = page;
             } else {
-                pagesCount += page;
+                pagesSum += page;
             }
         }
 
-        return true;
+        return count;
     }
 
     /*
@@ -255,6 +255,88 @@ public class InterviewbitBinay {
         }
         return result;
 
+    }
+
+
+    public int getBillionUsersDay(float[] growthRates) {
+        float target = 1000000000;
+        int days = binarySearch(growthRates, 1, 1000000000, 1000000000);
+        return days;
+    }
+
+    private int binarySearch(float[] growthRates, int low, int high, int target) {
+        if (low > high)
+            return -1;
+        int mid = low + (high - low) / 2;
+
+        long sum = 0;
+        long preDay = 0;
+        for (float rate : growthRates) {
+            sum += Math.pow(rate, mid);
+            preDay += Math.pow(rate, mid - 1);
+            if (sum > target) {
+                break;
+            }
+        }
+        if (sum >= target && preDay < target) {
+            return mid;
+        }
+
+        if (sum > target) {
+            return binarySearch(growthRates, 1, mid - 1, 1000000000);
+        } else {
+            return binarySearch(growthRates, mid + 1, high, 1000000000);
+        }
+    }
+
+    // Given a sorted array of integers, and an integer, you need to find the frequency of that integer in that array
+// 1 1 2 3 3 4 4 4 5, 4 => 3
+    public int countOccurence(int[] arr, int ele) {
+        if (arr == null || arr.length == 0)
+            return 0;
+        int low = 0;
+        int high = arr.length - 1;
+
+        int floorIndex = firstIndex(arr, low, high, ele);
+        //System.out.println(floorIndex+" ---- ");
+
+        int ceilIndex = lastIndex(arr, low, high, ele);
+        //System.out.println(floorIndex+" floor---- ");
+
+        if (floorIndex != -1) {
+            return ceilIndex - floorIndex + 1;
+        }
+        return 0;
+    }
+
+    //min index of an element, floor index
+    private int firstIndex(int[] arr, int low, int high, int ele) {
+        if (low > high)//not found
+            return -1;
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == ele && (mid == low || arr[mid - 1] != ele)) {
+            return mid;
+        } else if (arr[mid] >= ele) {
+            return firstIndex(arr, low, mid - 1, ele);
+        } else {
+            return firstIndex(arr, mid + 1, high, ele);
+        }
+    }
+
+    //max index of an element, ceil index
+    private int lastIndex(int[] arr, int low, int high, int ele) {
+        if (low > high)//not found
+            return -1;
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == ele && (mid == high || arr[mid + 1] != ele)) {
+            return mid;
+        } else if (arr[mid] > ele) {
+            return lastIndex(arr, low, mid - 1, ele);
+        } else {
+            return lastIndex(arr, mid + 1, high, ele);
+        }
     }
 
 }

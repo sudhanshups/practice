@@ -43,10 +43,68 @@ public class InterviewbitHeapsMaps {
         System.out.println(ibit.get(2));
         //----
 
-        System.out.println("Skyline problem===");
-        System.out.println(ibit.getSkyline(new int[][]{{2, 9, 10,}, {3, 7, 15,}, {5, 12, 12,}, {15, 20, 10,}, {19, 24, 8}}));
+//        System.out.println("Skyline problem===");
+//        System.out.println(ibit.getSkyline(new int[][]{{2, 9, 10,}, {3, 7, 15,}, {5, 12, 12,}, {15, 20, 10,}, {19, 24, 8}}));
+//
+//        System.out.println(Arrays.toString(ibit.maxNumberFrom2ArrayMAintainingOrder(new int[]{3, 4, 6, 5}, new int[]{9, 1, 2, 5, 8, 3}, 5)));
 
-        System.out.println(Arrays.toString(ibit.maxNumberFrom2ArrayMAintainingOrder(new int[]{3, 4, 6, 5},new int[]{9, 1, 2, 5, 8, 3},5 )));
+        System.out.println("-==========");
+//        System.out.println(Arrays.toString(ibit.findMaxProduct(new int[]{2,1,2,1,2})));
+//        System.out.println(ibit.maxCandies(new int[]{2, 1, 7, 4, 2}, 3));
+
+
+    }
+
+    //median of stream of integer
+    public int[] medianInStreamOfNumbers(int arr[]) {
+        Queue<Integer> minHeap = new PriorityQueue<>();
+        Queue<Integer> maxHeap = new PriorityQueue<>((u, v) -> v - u);
+        int[] res = new int[arr.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            maxHeap.add(arr[i]);
+            minHeap.add(maxHeap.poll());
+            if (maxHeap.size() < minHeap.size()) {                     // maintain size property
+                maxHeap.add(minHeap.poll());
+            }
+            res[i] = maxHeap.size() > minHeap.size() ? maxHeap.peek() : (maxHeap.peek() + minHeap.peek()) / 2;
+        }
+        return res;
+    }
+
+    public int maxCandies(int[] arr, int k) {
+        Queue<Integer> pq = new PriorityQueue<>((u, v) -> v - u);
+        for (int value : arr) {
+            pq.add(value);
+        }
+        int res = 0;
+        for (int i = 0; i < k; i++) {
+            int maxCandies = pq.poll();
+            res += maxCandies;
+            pq.add(maxCandies / 2);
+        }
+        return res;
+    }
+
+
+    //Largest Triple Products
+    public int[] findMaxProduct(int[] arr) {
+        Queue<Integer> pq = new PriorityQueue<>();
+        int[] res = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            pq.add(arr[i]);
+            if (pq.size() > 3) {
+                pq.poll();
+            }
+            if (pq.size() < 3) {
+                res[i] = -1;
+            } else {
+                List<Integer> a = new ArrayList<>(pq);
+                res[i] = a.get(0) * a.get(1) * a.get(2);
+            }
+        }
+
+        return res;
     }
 
     public int[] maxNumberFrom2ArrayMAintainingOrder(int[] nums1, int[] nums2, int k) {
@@ -76,7 +134,7 @@ public class InterviewbitHeapsMaps {
         return ans;
     }
 
-    public boolean compare(int[] nums1, int start1, int[] nums2, int start2) {
+    private boolean compare(int[] nums1, int start1, int[] nums2, int start2) {
         for (; start1 < nums1.length && start2 < nums2.length; start1++, start2++) {
             if (nums1[start1] > nums2[start2]) return true;
             if (nums1[start1] < nums2[start2]) return false;
@@ -84,7 +142,7 @@ public class InterviewbitHeapsMaps {
         return start1 != nums1.length;
     }
 
-    public int[] solve(int[] nums, int k) {
+    private int[] solve(int[] nums, int k) {
         int[] res = new int[k];
         int len = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -97,6 +155,33 @@ public class InterviewbitHeapsMaps {
         return res;
     }
 
+    //distinct-numbers-in-window/
+    public ArrayList<Integer> dNums(ArrayList<Integer> arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        ArrayList<Integer> res = new ArrayList<>();
+        int d = 0;
+        for (int i = 0; i < k - 1; i++) {
+            if (!map.containsKey(arr.get(i))) {
+                d++;
+            }
+            map.put(arr.get(i), i);
+        }
+        for (int i = k - 1; i < arr.size(); i++) {
+            if ((i - k) >= 0 && (i - map.get(arr.get(i - k)) + 1) > k) {
+                d--;
+            }
+
+            if (!map.containsKey(arr.get(i)) || ((i - map.get(arr.get(i)) + 1) > k)) {
+                d++;
+            }
+            map.put(arr.get(i), i);
+            res.add(d);
+
+        }
+        return res;
+    }
+
+    //https://leetcode.com/problems/the-skyline-problem/
     public List<int[]> getSkyline(int[][] buildings) {
         List<int[]> result = new ArrayList<>();
         List<int[]> height = new ArrayList<>();
@@ -330,6 +415,7 @@ public class InterviewbitHeapsMaps {
         return res;
     }
 
+    //magician-and-chocolates/
     int macChocolate(ArrayList<Integer> chocolates, int k) {
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>((u, v) -> (v - u));
         maxHeap.addAll(chocolates);

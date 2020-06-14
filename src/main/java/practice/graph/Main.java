@@ -81,7 +81,7 @@ class Graph {
         visited = new boolean[V];
         dfsUtil(mother, visited);
         for (int i = 0; i < V; i++) {
-            if (visited[i] == false)
+            if (!visited[i])
                 return -1;
         }
         return mother;
